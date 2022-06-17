@@ -22,7 +22,7 @@ public class KeyPressListener {
     private final KeyBinding key_SEED;
     private final KeyBinding key_FEED;
     private final KeyBinding key_FISHING;
-    private final KeyBinding Key_BONEMEALING;
+    private final KeyBinding key_BONEMEALING;
 
     public KeyPressListener() {
         String categoryGeneral = Text.translatable("key.category.general").getString();
@@ -64,7 +64,7 @@ public class KeyPressListener {
                 GLFW.GLFW_KEY_UNKNOWN,
                 categorySwitchTo
         );
-        Key_BONEMEALING = new KeyBinding("bonemealing",
+        key_BONEMEALING = new KeyBinding("bonemealing",
                 GLFW.GLFW_KEY_UNKNOWN,
                 categorySwitchTo
         );
@@ -77,7 +77,7 @@ public class KeyPressListener {
         KeyBindingHelper.registerKeyBinding(key_SEED);
         KeyBindingHelper.registerKeyBinding(key_FEED);
         KeyBindingHelper.registerKeyBinding(key_FISHING);
-        KeyBindingHelper.registerKeyBinding(Key_BONEMEALING);
+        KeyBindingHelper.registerKeyBinding(key_BONEMEALING);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> onProcessKey());
     }
@@ -110,7 +110,7 @@ public class KeyPressListener {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.FEED).toString().toLowerCase();
             } else if (key_FISHING.wasPressed()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.FISHING).toString().toLowerCase();
-            } else if (Key_BONEMEALING.wasPressed()) {
+            } else if (key_BONEMEALING.wasPressed()) {
                 modeName = AutoHarvest.instance.toSpecifiedMode(AutoHarvest.HarvestMode.BONEMEALING).toString().toLowerCase();
             }
             if (modeName != null)

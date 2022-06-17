@@ -1,8 +1,7 @@
 package com.flier268.autoharvest.Plugin;
 
 import com.flier268.autoharvest.AutoHarvest;
-import com.flier268.autoharvest.Configure;
-
+import com.flier268.autoharvest.Configuration;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -19,7 +18,7 @@ public class ClothConfig {
         ConfigCategory scrolling = builder.getOrCreateCategory(Text.translatable(AutoHarvest.MOD_NAME));
         ConfigEntryBuilder entryBuilder = ConfigEntryBuilder.create();
 
-        Configure c = AutoHarvest.instance.configure.load();
+        Configuration c = AutoHarvest.instance.configure.load();
 
         scrolling.addEntry(entryBuilder.startBooleanToggle(Text.translatable("config.flower_is_seed"), c.flowerISseed.value).setDefaultValue(false).setSaveConsumer(b -> c.flowerISseed.value = b).build());
 

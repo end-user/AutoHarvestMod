@@ -27,8 +27,6 @@ dependencies {
 //    include "me.shedaniel.cloth:config-2:${project.cloth_config_version}"
 
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-
-
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is

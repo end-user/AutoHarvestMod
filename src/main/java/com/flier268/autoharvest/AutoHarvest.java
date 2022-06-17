@@ -15,7 +15,7 @@ public class AutoHarvest implements ClientModInitializer {
     TaskManager taskManager = new TaskManager();
 
     public boolean Switch = false;
-    public Configure configure = new Configure();
+    public Configuration configure = new Configuration();
 
     @Override
     public void onInitializeClient() {
@@ -30,12 +30,12 @@ public class AutoHarvest implements ClientModInitializer {
     public enum HarvestMode {
         HARVEST,    // Harvest only
         PLANT,      // Plant only
-        FARMER,     //Harvest then re-plant
+        FARMER,     // Harvest then re-plant
         SEED,       // Harvest seeds & flowers
         BONEMEALING,
         FEED,       // Feed animals
         FISHING,    // Fishing
-        SPAWNPROOF;
+        SPAWNPROOF; // Spawnproofing
         private static final HarvestMode[] VALUES = values();
 
         public AutoHarvest.HarvestMode next() {
@@ -48,7 +48,7 @@ public class AutoHarvest implements ClientModInitializer {
         if (listener == null) {
             listener = new TickListener(configure, MinecraftClient.getInstance().player);
         } else
-            listener.Reset();
+            listener.reset();
         this.mode = mode;
         return mode;
     }
@@ -58,7 +58,7 @@ public class AutoHarvest implements ClientModInitializer {
         if (listener == null) {
             listener = new TickListener(configure, MinecraftClient.getInstance().player);
         } else
-            listener.Reset();
+            listener.reset();
         mode = mode.next();
         return mode;
     }
