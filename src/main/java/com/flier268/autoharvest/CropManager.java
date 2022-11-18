@@ -95,6 +95,7 @@ public class CropManager {
 
     public static final Multimap<Item, Class<? extends AnimalEntity>> FEED_MAP;
     public static final Multimap<Item, Class<? extends AnimalEntity>> SHEAR_MAP;
+
     static {
         FEED_MAP = ArrayListMultimap.create();
         FEED_MAP.put(Items.GOLDEN_CARROT, HorseEntity.class);
@@ -122,7 +123,7 @@ public class CropManager {
         FEED_MAP.put(Items.SEAGRASS, TurtleEntity.class);
 
         // 1.14
-        FEED_MAP.put(Items.KELP, PandaEntity.class);
+        FEED_MAP.put(Items.BAMBOO, PandaEntity.class);
         FEED_MAP.put(Items.SWEET_BERRIES, FoxEntity.class);
         FEED_MAP.put(Items.COD, CatEntity.class);
         FEED_MAP.put(Items.SALMON, CatEntity.class);
@@ -154,6 +155,9 @@ public class CropManager {
         FEED_MAP.put(Items.WHEAT, GoatEntity.class);
         // disabled due to complexity of interaction
         // FEED_MAP.put(Items.TROPICAL_FISH_BUCKET, AxolotlEntity.class);
+
+        // 1.19
+        FEED_MAP.put(Items.SLIME_BALL, FrogEntity.class);
 
         SHEAR_MAP = ArrayListMultimap.create();
         SHEAR_MAP.put(Items.SHEARS, SheepEntity.class);
@@ -203,7 +207,7 @@ public class CropManager {
                 && stack.getItem() == Items.COCOA_BEANS);
     }
 
-    public static boolean canPaint(BlockState s, ItemStack stack) {
+    public static boolean canPlantKelp(BlockState s, ItemStack stack) {
         if (stack.getItem() == Items.KELP) {
             // is water and the water is stationary
             return s.getBlock() == Blocks.WATER && s.getEntries().values().toArray()[0].equals(0);

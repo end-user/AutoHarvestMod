@@ -9,20 +9,20 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 
 public class Configuration {
-    private File configFile;
+    private final File configFile;
 
-    public FlowerISseed flowerISseed = new FlowerISseed();
+    public FlowerIsSeed flowerIsSeed = new FlowerIsSeed();
 
-    public static class FlowerISseed {
+    public static class FlowerIsSeed {
         public boolean value = false;
-        private String name = "flowerISseed";
+        private final String name = "flowerIsSeed";
     }
 
-    public Effect_radius effect_radius = new Effect_radius();
+    public EffectRadius effectRadius = new EffectRadius();
 
-    public static class Effect_radius {
+    public static class EffectRadius {
         public int value = 3;
-        private String name = "effect_radius";
+        private final String name = "effect_radius";
         public static final int Max = 3;
         public static final int Min = 0;
     }
@@ -31,7 +31,7 @@ public class Configuration {
 
     public static class TickSkip {
         public int value = 0;
-        private String name = "tick_skip";
+        private final String name = "tick_skip";
         public static final int Max = 100;
         public static final int Min = 0;
     }
@@ -50,7 +50,7 @@ public class Configuration {
                 .getConfigDir()
                 .resolve("AutoHarvest.json")
                 .toFile();
-        flowerISseed.value = false;
+        flowerIsSeed.value = false;
     }
 
     public Configuration load() {
@@ -61,17 +61,17 @@ public class Configuration {
             if (!jsonStr.equals("")) {
                 JsonObject jsonObject = JsonParser.parseString(jsonStr).getAsJsonObject();
 
-                if (jsonObject.has(flowerISseed.name)) {
+                if (jsonObject.has(flowerIsSeed.name)) {
                     try {
-                        this.flowerISseed.value = jsonObject.getAsJsonPrimitive(flowerISseed.name).getAsBoolean();
+                        this.flowerIsSeed.value = jsonObject.getAsJsonPrimitive(flowerIsSeed.name).getAsBoolean();
                     } catch (Exception e) {
                     }
                 }
-                if (jsonObject.has(effect_radius.name)) {
+                if (jsonObject.has(effectRadius.name)) {
                     try {
-                        this.effect_radius.value = jsonObject.getAsJsonPrimitive(effect_radius.name).getAsInt();
-                        if (effect_radius.value < Effect_radius.Min || effect_radius.value > Effect_radius.Max)
-                            effect_radius.value = Effect_radius.Max;
+                        this.effectRadius.value = jsonObject.getAsJsonPrimitive(effectRadius.name).getAsInt();
+                        if (effectRadius.value < EffectRadius.Min || effectRadius.value > EffectRadius.Max)
+                            effectRadius.value = EffectRadius.Max;
                     } catch (Exception e) {
                     }
                 }
@@ -99,8 +99,8 @@ public class Configuration {
 
     public Configuration save() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(flowerISseed.name, this.flowerISseed.value);
-        jsonObject.addProperty(effect_radius.name, this.effect_radius.value);
+        jsonObject.addProperty(flowerIsSeed.name, this.flowerIsSeed.value);
+        jsonObject.addProperty(effectRadius.name, this.effectRadius.value);
         jsonObject.addProperty(tickSkip.name, this.tickSkip.value);
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

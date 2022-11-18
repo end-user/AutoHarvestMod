@@ -3,6 +3,7 @@ package com.flier268.autoharvest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import java.util.Set;
@@ -61,30 +63,42 @@ public class SpawnproofManager {
         int Z = (int) Math.floor(p.getZ());
         BlockPos playerPos = new BlockPos(X, Y, Z);
 
-        for (int deltaY = 3; deltaY >= -2; --deltaY)
-            for (int deltaX = -configuration.effect_radius.value; deltaX <= configuration.effect_radius.value; ++deltaX)
-                for (int deltaZ = -configuration.effect_radius.value; deltaZ <= configuration.effect_radius.value; ++deltaZ) {
+
+        for (int deltaX = -configuration.effectRadius.value; deltaX <= configuration.effectRadius.value; ++deltaX)
+            for (int deltaZ = -configuration.effectRadius.value; deltaZ <= configuration.effectRadius.value; ++deltaZ)
+                for (int deltaY = -2; deltaY <= 3; ++deltaY) {
                     BlockPos pos = new BlockPos(X + deltaX, Y + deltaY, Z + deltaZ);
                     // skip current location - cannot place slabs there
                     // also skip target if mobs cannot spawn inside block
-                    if (playerPos.equals(pos) || !w.getBlockState(pos).getBlock().canMobSpawnInside())
-                        continue;
                     BlockPos downPos = pos.down();
                     BlockState downBlock = w.getBlockState(downPos);
-                    // next, the block below needs to be solid, not have entity data (eliminates things like furnaces)
-                    // and not be interactive (like crafting tables)
-                    if (!downBlock.isSolidBlock(w, downPos) ||
-                            downBlock.hasBlockEntity() ||
-                            interactiveBlocks.contains(downBlock.getBlock())
-                    ) continue;
-                    BlockHitResult blockHitResult = new BlockHitResult(new Vec3d(X + deltaX + 0.5, Y, Z + deltaZ + 0.5),
+                    BlockState block = w.getBlockState(pos);
+                    if (playerPos.equals(pos))
+                        continue;
+                    if (!block.isAir())
+                        continue;
+                    if (!Block.isFaceFullSquare(downBlock.getCollisionShape(w, downPos), Direction.UP)
+                            && downBlock.getBlock() != Blocks.SOUL_SAND)
+                        continue;
+                    if (downBlock.hasBlockEntity())
+                        continue;
+                    if (interactiveBlocks.contains(downBlock.getBlock()))
+                        continue;
+                    /*System.out.println("🔎inspecting " + pos.toShortString()
+                            + "\n\toccupied? " + playerPos.equals(pos)
+                            + "\n\tair? " + block.isAir()
+                            + "\n\tabove solid? " + Block.isFaceFullSquare(block.getCollisionShape(w,downPos),Direction.UP)
+                            + "\n\tabove tileEnt? " + downBlock.hasBlockEntity()
+                            + "\n\tabove interactive? " + interactiveBlocks.contains(downBlock.getBlock())
+                    );*/
+                    BlockHitResult blockHitResult = new BlockHitResult(Vec3d.of(pos),
                             Direction.UP, downPos, false);
-                    System.out.println("placing "
+                    /*System.out.println("👇 placing "
                             + itemsInHand.getItem().toString()
                             + " on "
                             + pos.toShortString()
                             + w.getBlockState(pos.down()).getBlock().toString()
-                    );
+                    );*/
                     assert MinecraftClient.getInstance().interactionManager != null;
                     ActionResult result =
                             MinecraftClient
@@ -96,10 +110,10 @@ public class SpawnproofManager {
                                             blockHitResult);
                     if (result.isAccepted()) {
                         playerManager.minusOneInHand();
-                        System.out.println("✅ block placed");
+                        //System.out.println("✅ block placed");
                         return;
                     } else {
-                        System.out.println("❌ failed to set block");
+                        //System.out.println("❌ failed to set block");
                     }
                 }
     }
