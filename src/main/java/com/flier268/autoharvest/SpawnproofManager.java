@@ -24,7 +24,8 @@ public class SpawnproofManager {
     private final Configuration configuration;
     private final PlayerManager playerManager;
     /*
-    This is a set of items you can spawnproof in the nether with; specifically, they should be non-flammable.
+    This is a set of items you can spawnproof in the nether with; specifically, they should be non-flammable (no
+    wooden buttons or wooden slabs)
      */
     private final Set<Item> netherSpawnproofItems = Set.of(
             // buttons
@@ -34,8 +35,9 @@ public class SpawnproofManager {
             Items.STONE_PRESSURE_PLATE, Items.POLISHED_BLACKSTONE_PRESSURE_PLATE,
             // slabs
             Items.STONE_SLAB, Items.STONE_BRICK_SLAB, Items.COBBLESTONE_SLAB,
-            Items.COBBLED_DEEPSLATE_SLAB, Items.NETHER_BRICK_SLAB,
-            Items.GRANITE_SLAB
+            Items.GRANITE_SLAB, Items.DIORITE_SLAB, Items.ANDESITE_SLAB,
+            Items.COBBLED_DEEPSLATE_SLAB,
+            Items.NETHER_BRICK_SLAB, Items.BLACKSTONE_SLAB, Items.POLISHED_BLACKSTONE_BRICK_SLAB
     );
     private final Set<Item> overworld_spawnproof_items = null;
     /*

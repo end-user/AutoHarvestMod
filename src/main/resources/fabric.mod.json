@@ -27,7 +27,7 @@
     "autoharvest.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.4.0",
+    "fabricloader": ">=0.14.0",
     "fabric": "*"
   },
   "suggests": {
