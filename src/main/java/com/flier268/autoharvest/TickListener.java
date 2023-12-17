@@ -402,7 +402,6 @@ public class TickListener {
         } else {
             handItem = tryFillItemInHand();
         }
-
         World w = p.getEntityWorld();
         int X = (int) Math.floor(p.getX());
         int Y = (int) Math.floor(p.getY());// the "leg block"
@@ -414,7 +413,7 @@ public class TickListener {
                     BlockState blockState = w.getBlockState(pos);
                     Block block = blockState.getBlock();
                     if (block instanceof Fertilizable) {
-                        if (((Fertilizable) block).isFertilizable(w, pos, blockState, w.isClient)) {
+                        if (((Fertilizable) block).isFertilizable(w, pos, blockState)) {
                             BlockHitResult blockHitResult = new BlockHitResult(
                                     new Vec3d(X + deltaX + 0.5, Y, Z + deltaZ + 0.5), Direction.UP, pos, false);
                             assert handItem != null;

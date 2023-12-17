@@ -34,7 +34,7 @@ public class CropManager {
             add(Blocks.ACACIA_SAPLING);
             add(Blocks.DARK_OAK_SAPLING);
             add(Blocks.FERN);
-            add(Blocks.GRASS);
+            add(Blocks.SHORT_GRASS);
             add(Blocks.DEAD_BUSH);
             add(Blocks.BROWN_MUSHROOM);
             add(Blocks.RED_MUSHROOM);
@@ -84,7 +84,7 @@ public class CropManager {
                     put(Blocks.MELON_STEM, Items.MELON_SEEDS);
                     put(Blocks.PUMPKIN_STEM, Items.PUMPKIN_SEEDS);
                     put(Blocks.SUGAR_CANE, Items.SUGAR_CANE);
-                    put(Blocks.GRASS, Items.GRASS);
+                    put(Blocks.SHORT_GRASS, Items.SHORT_GRASS);
                     put(Blocks.BAMBOO, Items.BAMBOO);
                     // 1.16
                     put(Blocks.CRIMSON_FUNGUS, Items.CRIMSON_FUNGUS);
