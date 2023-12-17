@@ -1,7 +1,5 @@
 package com.flier268.autoharvest;
 
-import java.util.Collection;
-
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -206,7 +204,7 @@ public class TickListener {
             for (int deltaZ = -configure.effect_radius.value; deltaZ <= configure.effect_radius.value; ++deltaZ) {
                 BlockPos pos = new BlockPos(X + deltaX, Y, Z + deltaZ);
                 if (CropManager.canPaint(w.getBlockState(pos), handItem) == false)
-                continue;
+                    continue;
                 if (CropManager.canPlantOn(handItem.getItem(), w, pos)) {
                     if (w.getBlockState(pos.down()).getBlock() == Blocks.KELP)
                         continue;
@@ -216,7 +214,7 @@ public class TickListener {
                     BlockHitResult blockHitResult = new BlockHitResult(new Vec3d(X + deltaX + 0.5, Y, Z + deltaZ + 0.5),
                             Direction.UP, downPos, false);
                     MinecraftClient.getInstance().interactionManager.interactBlock(MinecraftClient.getInstance().player,
-                        Hand.MAIN_HAND, blockHitResult);
+                            Hand.MAIN_HAND, blockHitResult);
                     minusOneInHand();
                     return;
                 }
@@ -314,44 +312,28 @@ public class TickListener {
                 p.getZ() - configure.effect_radius.value,
                 p.getX() + configure.effect_radius.value, p.getY() + configure.effect_radius.value,
                 p.getZ() + configure.effect_radius.value);
-        Collection<Class<? extends AnimalEntity>> needShearAnimalList = CropManager.SHEAR_MAP.get(handItem.getItem());
-        for (Class<? extends AnimalEntity> type : needShearAnimalList) {
-            for (AnimalEntity e : p.getEntityWorld().getEntitiesByClass(
-                    type,
-                    box,
-                    animalEntity -> {
-                        if (animalEntity instanceof SheepEntity) {
-                            return !animalEntity.isBaby() && !((SheepEntity) animalEntity).isSheared();
-                        }
-                        return false;
-                    })) {
-                lastUsedItem = handItem.copy();
-                assert MinecraftClient.getInstance().interactionManager != null;
-                MinecraftClient.getInstance().interactionManager.interactEntity(p, e, Hand.MAIN_HAND);
-                return;
-            }
-        }
-        /*
-         * Special handling for axolotls: the food is a single use item and after it is
-         * used, it is replaced with a water
-         * bucket. The interaction is resolved on the server - if the client doesn't
-         * match, the next animal to be
-         * interacted with gets scooped up rather than fed.
-         */
-        Collection<Class<? extends AnimalEntity>> needFeedAnimalList = CropManager.FEED_MAP.get(handItem.getItem());
-        for (Class<? extends AnimalEntity> type : needFeedAnimalList) {
-            for (AnimalEntity e : p.getEntityWorld().getEntitiesByClass(
-                    type,
-                    box,
-                    animalEntity -> animalEntity.getBreedingAge() >= 0 && !animalEntity.isInLove())) {
-                lastUsedItem = handItem.copy();
 
-                assert MinecraftClient.getInstance().interactionManager != null;
-                MinecraftClient.getInstance().interactionManager
-                        .interactEntity(p, e, Hand.MAIN_HAND);
-            }
+        // Shear
+        var canShearSheep = p.getEntityWorld().getEntitiesByClass(SheepEntity.class, box, sheepEntity -> {
+            return !sheepEntity.isBaby() && !sheepEntity.isSheared();
+        });
+        for (SheepEntity sheepEntity : canShearSheep) {
+            lastUsedItem = handItem.copy();
+            MinecraftClient.getInstance().interactionManager
+                    .interactEntity(p, sheepEntity, Hand.MAIN_HAND);
         }
 
+        var canFeedAnimal = p.getEntityWorld().getEntitiesByClass(AnimalEntity.class, box, animalEntity -> {
+            if (animalEntity.isBreedingItem(handItem) && animalEntity.getBreedingAge() >= 0 && animalEntity.canEat()) {
+                return true;
+            }
+            return false;
+        });
+        for (AnimalEntity animalEntity : canFeedAnimal) {
+            lastUsedItem = handItem.copy();
+            MinecraftClient.getInstance().interactionManager
+                    .interactEntity(p, animalEntity, Hand.MAIN_HAND);
+        }
     }
 
     private long getWorldTime() {
