@@ -28,14 +28,13 @@ public class AutoHarvest implements ClientModInitializer {
     }
 
     public enum HarvestMode {
-        HARVEST, // Harvest only
-        PLANT, // Plant only
-        Farmer, // Harvest then re-plant
-        SEED, // Harvest seeds & flowers
+        HARVEST,  // Harvest only
+        PLANT,  // Plant only
+        Farmer,  //Harvest then re-plant
+        SEED,   // Harvest seeds & flowers
         BONEMEALING,
-        FEED, // Feed animals
+        FEED,   // Feed animals
         FISHING;// Fishing
-
         private static HarvestMode[] vals = values();
 
         public AutoHarvest.HarvestMode next() {
@@ -43,8 +42,9 @@ public class AutoHarvest implements ClientModInitializer {
         }
     }
 
+
     public HarvestMode toSpecifiedMode(HarvestMode mode) {
-        // setDisabled();
+        //setDisabled();
         if (listener == null) {
             listener = new TickListener(configure, MinecraftClient.getInstance().player);
         } else
@@ -54,7 +54,7 @@ public class AutoHarvest implements ClientModInitializer {
     }
 
     public HarvestMode toNextMode() {
-        // setDisabled();
+        //setDisabled();
         if (listener == null) {
             listener = new TickListener(configure, MinecraftClient.getInstance().player);
         } else
@@ -68,7 +68,10 @@ public class AutoHarvest implements ClientModInitializer {
             return;
         if (MinecraftClient.getInstance().player == null)
             return;
-
-        MinecraftClient.getInstance().player.sendMessage(Text.of(Text.translatable("notify.prefix").getString() + Text.translatable(key, obj).getString()), true);
+        MinecraftClient.getInstance().player.sendMessage(
+			Text.literal(
+				Text.translatable("notify.prefix").getString() + Text.translatable(key, obj).getString()
+			)
+		, true);
     }
 }

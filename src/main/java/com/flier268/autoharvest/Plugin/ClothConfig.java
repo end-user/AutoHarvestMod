@@ -13,7 +13,7 @@ public class ClothConfig {
     public static Screen openConfigScreen(Screen parentScreen) {
         ConfigBuilder builder = ConfigBuilder.create()
 
-                .setTitle(Text.translatable(AutoHarvest.MOD_NAME + " config screen"))
+				.setTitle(Text.translatable(AutoHarvest.MOD_NAME + " config screen"))
                 .setSavingRunnable(ClothConfig::saveConfig);
 
         ConfigCategory scrolling = builder.getOrCreateCategory(Text.translatable(AutoHarvest.MOD_NAME));
